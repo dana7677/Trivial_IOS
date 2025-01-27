@@ -32,11 +32,34 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         
         TableView.delegate = self
         TableView.dataSource = self
-        
+        QuestionTxt.text = list[QuestionSelect].QuestionText
         txtAnswer.text = "Para la categoria de: " + String(describing:CategorySelected)
+        
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        Reset()
+    }
+    
+    func Reset()
+    {
+        QuestionSelect = 0
+        QuestionUsed = []
+        CategorysGet = []
+        Chesse_1.backgroundColor = UIColor.clear
+        Chesse_2.backgroundColor = UIColor.clear
+        Chesse_3.backgroundColor = UIColor.clear
+        Chesse_4.backgroundColor = UIColor.clear
+        Chesse_5.backgroundColor = UIColor.clear
+        Chesse_6.backgroundColor = UIColor.clear
+        
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        print("The value of QuestionSelect is \(QuestionSelect)")
+        print("The number of Answers is \(list[QuestionSelect].Answers.count)")
         
         return list[QuestionSelect].Answers.count
     }
@@ -55,11 +78,28 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
             ChangeColorChesse(CategorySelected)
             QuestionUsed.append(QuestionSelect)
             CategorysGet.append(CategorySelected)
+            GoToNextView()
         }else
         {
             txtAnswer.text = list[QuestionSelect].FailAnswerTxt
         }
     }
+    
+    func GoToNextView()
+    {
+        
+        
+        if(CategorysGet.count >= 6)
+        {
+            performSegue(withIdentifier: "showVictory", sender: self)
+        }
+    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+            //let detailViewController = segue.destination as! VictoryViewController
+            //TableView.deselectItem(at: indexPath, animated: true)
+        }
+    
+    
     @IBAction func RandomCategory(_ sender: Any) {
         
        
@@ -111,8 +151,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
             }
         }
         
-        let RandomQuestion = Int.random(in: 0..<QuestionUsedNew.count)
-        QuestionSelect = QuestionUsedNew[RandomQuestion].id
+        QuestionSelect = QuestionUsedNew.randomElement()!.id
         TableView.reloadData()
         QuestionTxt.text = list[QuestionSelect].QuestionText
         txtAnswer.text = "Para la categoria de: " + String(describing:CategorySelected)
@@ -291,29 +330,29 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
            
            
            let list = [
-            DataQuestion(id: 1, CategoryQuestion: CategoryQuestionEnum.Geografia , QuestionText: "¿Cuál es el río más largo del mundo?", Answers:Answers1, CorrectAnswerTxt: "Que bien lo has hecho", FailAnswerTxt: "Tienes menos cultura que un burro"),
-            DataQuestion(id: 2, CategoryQuestion: CategoryQuestionEnum.Geografia , QuestionText: "¿En qué continente se encuentra el desierto del Sahara?", Answers:Answers2, CorrectAnswerTxt: "Que bien lo has hecho", FailAnswerTxt: "Tienes menos cultura que un burro"),
-            DataQuestion(id: 3, CategoryQuestion: CategoryQuestionEnum.Geografia , QuestionText: "¿Qué país tiene la mayor cantidad de islas en el mundo?", Answers:Answers3, CorrectAnswerTxt: "Que bien lo has hecho", FailAnswerTxt: "Tienes menos cultura que un burro"),
+            DataQuestion(id: 0, CategoryQuestion: CategoryQuestionEnum.Geografia , QuestionText: "¿Cuál es el río más largo del mundo?", Answers:Answers1, CorrectAnswerTxt: "Que bien lo has hecho", FailAnswerTxt: "Tienes menos cultura que un burro"),
+            DataQuestion(id: 1, CategoryQuestion: CategoryQuestionEnum.Geografia , QuestionText: "¿En qué continente se encuentra el desierto del Sahara?", Answers:Answers2, CorrectAnswerTxt: "Que bien lo has hecho", FailAnswerTxt: "Tienes menos cultura que un burro"),
+            DataQuestion(id: 2, CategoryQuestion: CategoryQuestionEnum.Geografia , QuestionText: "¿Qué país tiene la mayor cantidad de islas en el mundo?", Answers:Answers3, CorrectAnswerTxt: "Que bien lo has hecho", FailAnswerTxt: "Tienes menos cultura que un burro"),
             
-            DataQuestion(id: 4, CategoryQuestion: CategoryQuestionEnum.ArtAndLiterature , QuestionText: "¿Quién escribió Harry Potter?", Answers:Answers4, CorrectAnswerTxt: "Que bien lo has hecho", FailAnswerTxt: "Tienes menos cultura que un burro"),
-            DataQuestion(id: 5, CategoryQuestion: CategoryQuestionEnum.ArtAndLiterature , QuestionText: "¿Cuál es la pintura más famosa de Vincent van Gogh?", Answers:Answers5, CorrectAnswerTxt: "Que bien lo has hecho", FailAnswerTxt: "Tienes menos cultura que un burro"),
-            DataQuestion(id: 6, CategoryQuestion: CategoryQuestionEnum.ArtAndLiterature , QuestionText: "¿Qué novela comienza con “Era el mejor de los tiempos, era el peor de los tiempos”?", Answers:Answers6, CorrectAnswerTxt: "Que bien lo has hecho", FailAnswerTxt: "Tienes menos cultura que un burro"),
+            DataQuestion(id: 3, CategoryQuestion: CategoryQuestionEnum.ArtAndLiterature , QuestionText: "¿Quién escribió Harry Potter?", Answers:Answers4, CorrectAnswerTxt: "Que bien lo has hecho", FailAnswerTxt: "Tienes menos cultura que un burro"),
+            DataQuestion(id: 4, CategoryQuestion: CategoryQuestionEnum.ArtAndLiterature , QuestionText: "¿Cuál es la pintura más famosa de Vincent van Gogh?", Answers:Answers5, CorrectAnswerTxt: "Que bien lo has hecho", FailAnswerTxt: "Tienes menos cultura que un burro"),
+            DataQuestion(id: 5, CategoryQuestion: CategoryQuestionEnum.ArtAndLiterature , QuestionText: "¿Qué novela comienza con “Era el mejor de los tiempos, era el peor de los tiempos”?", Answers:Answers6, CorrectAnswerTxt: "Que bien lo has hecho", FailAnswerTxt: "Tienes menos cultura que un burro"),
             
-            DataQuestion(id: 7, CategoryQuestion: CategoryQuestionEnum.History , QuestionText: "¿En qué año llegó el hombre a la Luna?", Answers:Answers7, CorrectAnswerTxt: "Que bien lo has hecho", FailAnswerTxt: "Tienes menos cultura que un burro"),
-            DataQuestion(id: 8, CategoryQuestion: CategoryQuestionEnum.History , QuestionText: "¿Quién fue el primer presidente de los Estados Unidos?", Answers:Answers8, CorrectAnswerTxt: "Que bien lo has hecho", FailAnswerTxt: "Tienes menos cultura que un burro"),
-            DataQuestion(id: 9, CategoryQuestion: CategoryQuestionEnum.History , QuestionText: "¿Qué imperio construyó el Coliseo?", Answers:Answers9, CorrectAnswerTxt: "Que bien lo has hecho", FailAnswerTxt: "Tienes menos cultura que un burro"),
+            DataQuestion(id: 6, CategoryQuestion: CategoryQuestionEnum.History , QuestionText: "¿En qué año llegó el hombre a la Luna?", Answers:Answers7, CorrectAnswerTxt: "Que bien lo has hecho", FailAnswerTxt: "Tienes menos cultura que un burro"),
+            DataQuestion(id: 7, CategoryQuestion: CategoryQuestionEnum.History , QuestionText: "¿Quién fue el primer presidente de los Estados Unidos?", Answers:Answers8, CorrectAnswerTxt: "Que bien lo has hecho", FailAnswerTxt: "Tienes menos cultura que un burro"),
+            DataQuestion(id: 8, CategoryQuestion: CategoryQuestionEnum.History , QuestionText: "¿Qué imperio construyó el Coliseo?", Answers:Answers9, CorrectAnswerTxt: "Que bien lo has hecho", FailAnswerTxt: "Tienes menos cultura que un burro"),
             
-            DataQuestion(id: 10, CategoryQuestion: CategoryQuestionEnum.Entertainment , QuestionText: "¿Cuál es el nombre del fontanero más famoso de los videojuegos?", Answers:Answers10, CorrectAnswerTxt: "Que bien lo has hecho", FailAnswerTxt: "Tienes menos cultura que un burro"),
-            DataQuestion(id: 11, CategoryQuestion: CategoryQuestionEnum.Entertainment , QuestionText: "¿En qué videojuego aparece el personaje “Master Chief”?", Answers:Answers11, CorrectAnswerTxt: "Que bien lo has hecho", FailAnswerTxt: "Tienes menos cultura que un burro"),
-            DataQuestion(id: 12, CategoryQuestion: CategoryQuestionEnum.Entertainment , QuestionText: "¿Qué videojuego popular consiste en construir estructuras con bloques?", Answers:Answers12, CorrectAnswerTxt: "Que bien lo has hecho", FailAnswerTxt: "Tienes menos cultura que un burro"),
+            DataQuestion(id: 9, CategoryQuestion: CategoryQuestionEnum.Entertainment , QuestionText: "¿Cuál es el nombre del fontanero más famoso de los videojuegos?", Answers:Answers10, CorrectAnswerTxt: "Que bien lo has hecho", FailAnswerTxt: "Tienes menos cultura que un burro"),
+            DataQuestion(id: 10, CategoryQuestion: CategoryQuestionEnum.Entertainment , QuestionText: "¿En qué videojuego aparece el personaje “Master Chief”?", Answers:Answers11, CorrectAnswerTxt: "Que bien lo has hecho", FailAnswerTxt: "Tienes menos cultura que un burro"),
+            DataQuestion(id: 11, CategoryQuestion: CategoryQuestionEnum.Entertainment , QuestionText: "¿Qué videojuego popular consiste en construir estructuras con bloques?", Answers:Answers12, CorrectAnswerTxt: "Que bien lo has hecho", FailAnswerTxt: "Tienes menos cultura que un burro"),
             
-            DataQuestion(id: 13, CategoryQuestion: CategoryQuestionEnum.Science , QuestionText: "¿Qué planeta es conocido como el planeta rojo", Answers:Answers13, CorrectAnswerTxt: "Que bien lo has hecho", FailAnswerTxt: "Tienes menos cultura que un burro"),
-            DataQuestion(id: 14, CategoryQuestion: CategoryQuestionEnum.Science , QuestionText: "¿Cuál es el elemento químico representado por la letra O?", Answers:Answers14, CorrectAnswerTxt: "Que bien lo has hecho", FailAnswerTxt: "Tienes menos cultura que un burro"),
-            DataQuestion(id: 15, CategoryQuestion: CategoryQuestionEnum.Science , QuestionText: "¿Qué órgano del cuerpo humano es responsable de bombear la sangre?", Answers:Answers15, CorrectAnswerTxt: "Que bien lo has hecho", FailAnswerTxt: "Tienes menos cultura que un burro"),
+            DataQuestion(id: 12, CategoryQuestion: CategoryQuestionEnum.Science , QuestionText: "¿Qué planeta es conocido como el planeta rojo", Answers:Answers13, CorrectAnswerTxt: "Que bien lo has hecho", FailAnswerTxt: "Tienes menos cultura que un burro"),
+            DataQuestion(id: 13, CategoryQuestion: CategoryQuestionEnum.Science , QuestionText: "¿Cuál es el elemento químico representado por la letra O?", Answers:Answers14, CorrectAnswerTxt: "Que bien lo has hecho", FailAnswerTxt: "Tienes menos cultura que un burro"),
+            DataQuestion(id: 14, CategoryQuestion: CategoryQuestionEnum.Science , QuestionText: "¿Qué órgano del cuerpo humano es responsable de bombear la sangre?", Answers:Answers15, CorrectAnswerTxt: "Que bien lo has hecho", FailAnswerTxt: "Tienes menos cultura que un burro"),
             
-            DataQuestion(id: 16, CategoryQuestion: CategoryQuestionEnum.Sports , QuestionText: "¿Qué país ha ganado más Copas del Mundo de fútbol masculino?", Answers:Answers16, CorrectAnswerTxt: "Que bien lo has hecho", FailAnswerTxt: "Tienes menos cultura que un burro"),
-            DataQuestion(id: 17, CategoryQuestion: CategoryQuestionEnum.Sports , QuestionText: "¿En qué deporte se utiliza una tabla y olas?", Answers:Answers17, CorrectAnswerTxt: "Que bien lo has hecho", FailAnswerTxt: "Tienes menos cultura que un burro"),
-            DataQuestion(id: 18, CategoryQuestion: CategoryQuestionEnum.Sports , QuestionText: "¿Cuántos jugadores hay en un equipo de baloncesto en la cancha?", Answers:Answers18, CorrectAnswerTxt: "Que bien lo has hecho", FailAnswerTxt: "Tienes menos cultura que un burro"),
+            DataQuestion(id: 15, CategoryQuestion: CategoryQuestionEnum.Sports , QuestionText: "¿Qué país ha ganado más Copas del Mundo de fútbol masculino?", Answers:Answers16, CorrectAnswerTxt: "Que bien lo has hecho", FailAnswerTxt: "Tienes menos cultura que un burro"),
+            DataQuestion(id: 16, CategoryQuestion: CategoryQuestionEnum.Sports , QuestionText: "¿En qué deporte se utiliza una tabla y olas?", Answers:Answers17, CorrectAnswerTxt: "Que bien lo has hecho", FailAnswerTxt: "Tienes menos cultura que un burro"),
+            DataQuestion(id: 17, CategoryQuestion: CategoryQuestionEnum.Sports , QuestionText: "¿Cuántos jugadores hay en un equipo de baloncesto en la cancha?", Answers:Answers18, CorrectAnswerTxt: "Que bien lo has hecho", FailAnswerTxt: "Tienes menos cultura que un burro"),
             
             ]
            
